@@ -13,8 +13,11 @@ class WestCampusMap {
         this.westUniversityNeighborhood = null;
         this.utCampusNeighborhood = null;
         this.neighborhoodLayers = {};
+        this.distanceOverlay = null;
         
         this.tooltip = null;
+        
+        this.utCampusCenter = [30.2862162,-97.7394];
         
         this.init();
     }
@@ -28,6 +31,9 @@ class WestCampusMap {
     setupUI() {
         this.tooltip = d3.select('#tooltip');
         d3.select('#resetViewBtn').on('click', () => this.resetView());
+        d3.select('#toggleDistanceBtn').on('click', () => this.toggleDistanceOverlay());
+        
+        d3.select('#distanceLegend').classed('hidden', true);
     }
     
     createMap() {
@@ -119,8 +125,53 @@ class WestCampusMap {
     
     renderMap() {
         this.renderNeighborhoods();
+        this.renderDistanceOverlay();
         this.renderApartments();
         this.updateInfoPanel();
+    }
+    
+    renderDistanceOverlay() {
+        if (this.distanceOverlay) {
+            this.map.removeLayer(this.distanceOverlay);
+        }
+        
+        const walkingDistances = [
+            { minutes: 5, meters: 400, color: 'rgba(191, 87, 0, 0.20)' },
+            { minutes: 10, meters: 800, color: 'rgba(191, 87, 0, 0.14)' },
+            { minutes: 15, meters: 1200, color: 'rgba(191, 87, 0, 0.08)' }
+        ];
+        
+        this.distanceOverlay = L.layerGroup();
+        
+        walkingDistances.reverse().forEach(distance => {
+            const circle = L.circle(this.utCampusCenter, {
+                radius: distance.meters,
+                fillColor: distance.color.replace('rgba', 'rgb').replace(/,\s*[\d.]+\)/, ')'),
+                fillOpacity: parseFloat(distance.color.match(/[\d.]+(?=\))/)[0]),
+                color: 'rgba(191, 87, 0, 0.4)',
+                weight: 2,
+                opacity: 0.6,
+                interactive: false
+            });
+            this.distanceOverlay.addLayer(circle);
+        });
+        
+        // Don't add to map by default - let user toggle it on
+    }
+    
+    toggleDistanceOverlay() {
+        const legend = d3.select('#distanceLegend');
+        const button = d3.select('#toggleDistanceBtn');
+        
+        if (this.map.hasLayer(this.distanceOverlay)) {
+            this.map.removeLayer(this.distanceOverlay);
+            legend.classed('hidden', true);
+            button.text('Walking Distance');
+        } else {
+            this.distanceOverlay.addTo(this.map);
+            legend.classed('hidden', false);
+            button.text('Hide Distance');
+        }
     }
     
     renderNeighborhoods() {
@@ -212,10 +263,16 @@ class WestCampusMap {
         if (infoPanel.empty()) return;
 
         if (selectedApartment) {
+            const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selectedApartment.address)}`;
+            
             infoPanel.html(`
                 <div class="apartment-details">
                     <h3 class="apartment-name">${selectedApartment.name}</h3>
-                    <p class="apartment-address">${selectedApartment.address}</p>
+                    <p class="apartment-address">
+                        <a href="${googleMapsUrl}" target="_blank" class="address-link">
+                            ${selectedApartment.address}
+                        </a>
+                    </p>
                     
                     ${selectedApartment.photo ? `
                     <div class="apartment-image">

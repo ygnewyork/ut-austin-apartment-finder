@@ -34,8 +34,26 @@
             <div class="map-container">
                 <div class="map-controls">
                     <button id="resetViewBtn" class="reset-view-btn">Reset View</button>
+                    <button id="toggleDistanceBtn" class="distance-toggle-btn">Walking Distance</button>
                 </div>
                 <div id="map"></div>
+                <div class="distance-legend" id="distanceLegend">
+                    <h4>Walking Time from UT Campus</h4>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: rgba(191, 87, 0, 0.20);"></div>
+                            <span>0-5 min</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: rgba(191, 87, 0, 0.14);"></div>
+                            <span>5-10 min</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: rgba(191, 87, 0, 0.08);"></div>
+                            <span>10-15 min</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="tooltip hidden" id="tooltip">
                     <div class="tooltip-content">
                         <h4 class="tooltip-title"></h4>
