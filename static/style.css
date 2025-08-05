@@ -67,11 +67,11 @@
   .header { padding: var(--space-24); }
   .header h1 { font-size: 2rem; }
   .header-subtitle { font-size: 1.1rem; }
-}/* passion_proj/static/style.css */
+}/* Stylesheet for West Campus apartment finder application */
+
 @import url('https://fonts.googleapis.com/css2?family=Benton+Sans:wght@400;600;700&display=swap');
 
 :root {
-  /* UT Austin Color Palette */
   --ut-burnt-orange: rgba(191, 87, 0, 1);
   --ut-burnt-orange-dark: rgba(160, 70, 0, 1);
   --ut-burnt-orange-light: rgba(215, 105, 15, 1);
@@ -83,11 +83,9 @@
   --ut-gray: rgba(169, 169, 169, 1);
   --ut-deep-teal: #2C7A7B;
 
-  /* RGB versions for opacity control */
   --ut-burnt-orange-rgb: 191, 87, 0;
   --ut-charcoal-rgb: 51, 63, 72;
 
-  /* Semantic Color Tokens (Light Mode) */
   --color-background: var(--ut-limestone);
   --color-surface: var(--ut-white);
   --color-text: var(--ut-charcoal);
@@ -99,16 +97,13 @@
   --color-focus-ring: rgba(var(--ut-burnt-orange-rgb), 0.5);
   --color-accent: var(--ut-deep-teal);
 
-  /* Typography */
   --font-family-base: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-size-base: 16px;
   --line-height-base: 1.7;
 
-  /* Spacing */
   --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px;
   --space-20: 20px; --space-24: 24px; --space-32: 32px; --space-48: 48px;
 
-  /* Border Radius & Shadows */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 16px;
@@ -118,17 +113,15 @@
   --shadow-lg: 0 10px 25px rgba(var(--ut-charcoal-rgb), 0.12);
   --shadow-inset: inset 0 2px 4px 0 rgba(var(--ut-charcoal-rgb), 0.05);
 
-  /* Transitions */
   --duration-fast: 150ms;
   --duration-normal: 250ms;
   --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-in-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- Dark Mode --- */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: #181d22; /* Darker charcoal */
+    --color-background: #181d22;
     --color-surface: var(--ut-charcoal);
     --color-text: var(--ut-limestone);
     --color-text-secondary: rgba(248, 248, 247, 0.6);
@@ -138,7 +131,6 @@
   }
 }
 
-/* --- Base Styles --- */
 html {
   font-size: var(--font-size-base);
   font-family: var(--font-family-base);
@@ -160,7 +152,6 @@ p { margin: 0; }
 a { color: var(--color-primary); text-decoration: none; transition: color var(--duration-fast); }
 a:hover { color: var(--color-primary-hover); text-decoration: underline; }
 
-/* --- Main Layout --- */
 .container { max-width: 1600px; margin: 0 auto; background-color: var(--color-surface); box-shadow: var(--shadow-lg); }
 .header {
   padding: var(--space-32) var(--space-24);
@@ -190,7 +181,6 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   min-height: 650px;
 }
 
-/* --- Map --- */
 .map-container { flex: 1; position: relative; }
 #map { width: 100%; height: 100%; background-color: var(--color-background); }
 .map-controls { position: absolute; top: var(--space-16); right: var(--space-16); z-index: 1000; }
@@ -258,7 +248,6 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   opacity: 1;
 }
 
-/* --- Tooltip --- */
 .tooltip {
   position: absolute;
   background-color: var(--color-surface);
@@ -280,7 +269,6 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
 .tooltip-image { width: 100%; height: 120px; margin-bottom: var(--space-8); border-radius: var(--radius-sm); overflow: hidden; }
 .tooltip-image img { width: 100%; height: 100%; object-fit: cover; }
 
-/* --- Info Panel --- */
 .info-panel {
   flex: 0 0 380px;
   background-color: var(--color-background);
@@ -448,7 +436,6 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   margin-top: var(--space-20); 
 }
 
-/* --- Buttons --- */
 .btn {
   display: inline-flex; 
   align-items: center; 
@@ -522,7 +509,6 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   width: 100%; 
 }
 
-/* --- Footer --- */
 .footer {
   background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-elevated) 100%);
   border-top: 1px solid var(--color-border-light);
@@ -545,7 +531,6 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   text-decoration-color: var(--color-primary); 
 }
 
-/* --- Responsive Design --- */
 @media (max-width: 900px) {
   .main-content { 
     flex-direction: column; 
