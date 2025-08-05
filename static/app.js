@@ -16,6 +16,7 @@ class WestCampusMap {
         this.distanceOverlay = null;
         
         this.tooltip = null;
+        this.currentPriceFilter = null; // Track current price filter
         
         this.utCampusCenter = [30.2862162,-97.7394];
         
@@ -32,6 +33,12 @@ class WestCampusMap {
         this.tooltip = d3.select('#tooltip');
         d3.select('#resetViewBtn').on('click', () => this.resetView());
         d3.select('#toggleDistanceBtn').on('click', () => this.toggleDistanceOverlay());
+        
+        // Setup price filter
+        d3.select('#priceRange').on('change', (event) => {
+            const selectedValue = event.target.value;
+            this.filterByPrice(selectedValue);
+        });
         
         d3.select('#distanceLegend').classed('hidden', true);
     }
@@ -211,8 +218,13 @@ class WestCampusMap {
     renderApartments() {
         if (!this.apartments || this.apartments.length === 0) return;
 
+        // Use stored price filter instead of reading from DOM
+        const filteredApartments = this.currentPriceFilter ? 
+            this.apartments.filter(apartment => this.isPriceInRange(apartment, this.currentPriceFilter)) :
+            this.apartments;
+
         const apartmentMarkers = this.g.selectAll('.apartment-marker')
-            .data(this.apartments, d => d.name);
+            .data(filteredApartments, d => d.name);
 
         const newMarkers = apartmentMarkers.enter()
             .append('g')
@@ -344,6 +356,95 @@ class WestCampusMap {
     
     resetView() {
         this.map.setView(this.initialCenter, this.initialZoom);
+    }
+    
+    // Parse price range string to get minimum and maximum values
+    parsePriceRange(priceString) {
+        if (!priceString) return { min: 0, max: Infinity };
+        
+        // Remove 's' suffix and extract numbers
+        const cleanString = priceString.replace(/s/g, '');
+        const parts = cleanString.split('-');
+        
+        if (parts.length === 1) {
+            // Single price like "900s"
+            const price = parseInt(parts[0].replace(/[$,]/g, ''));
+            return { min: price, max: price };
+        } else if (parts.length === 2) {
+            // Price range like "900s-$2,600s"
+            const minPrice = parseInt(parts[0].replace(/[$,]/g, ''));
+            const maxPrice = parseInt(parts[1].replace(/[$,]/g, ''));
+            return { min: minPrice, max: maxPrice };
+        }
+        
+        return { min: 0, max: Infinity };
+    }
+    
+    // Check if apartment price is within the filter range
+    isPriceInRange(apartment, maxPrice) {
+        if (!maxPrice) return true; // No filter applied
+        
+        const priceRange = this.parsePriceRange(apartment.price_per_person);
+        return priceRange.min <= maxPrice;
+    }
+    
+    // Filter apartments by price and update map
+    filterByPrice(maxPrice) {
+        this.currentPriceFilter = maxPrice; // Store the current filter
+        
+        const filteredApartments = this.apartments.filter(apartment => 
+            this.isPriceInRange(apartment, maxPrice)
+        );
+        
+        // Update the apartment markers
+        this.renderFilteredApartments(filteredApartments);
+        
+        // Update info panel if currently selected apartment is filtered out
+        const selectedMarker = this.g.select('.apartment-marker.selected');
+        if (!selectedMarker.empty()) {
+            const selectedData = selectedMarker.datum();
+            if (!this.isPriceInRange(selectedData, maxPrice)) {
+                this.clearSelection();
+            }
+        }
+    }
+    
+    // Render filtered apartments
+    renderFilteredApartments(filteredApartments) {
+        const apartmentMarkers = this.g.selectAll('.apartment-marker')
+            .data(filteredApartments, d => d.name);
+
+        // Remove markers that are filtered out
+        apartmentMarkers.exit().remove();
+
+        // Add new markers for apartments that are now visible
+        const newMarkers = apartmentMarkers.enter()
+            .append('g')
+            .attr('class', 'apartment-marker');
+
+        newMarkers.append('circle').attr('r', 8);
+            
+        newMarkers.on('mouseover', (event, d) => {
+                this.showTooltip(event, {
+                    title: d.name,
+                    info: `$${d.price_per_person}/month`,
+                    photo: d.photo
+                });
+            })
+            .on('mouseout', () => {
+                this.hideTooltip();
+            })
+            .on('click', (event, d) => {
+                event.stopPropagation();
+                this.selectApartment(d);
+            });
+
+        // Update positions for all markers
+        apartmentMarkers.merge(newMarkers)
+            .attr('transform', d => {
+                const point = this.map.latLngToLayerPoint(new L.LatLng(d.lat, d.lon));
+                return `translate(${point.x},${point.y})`;
+            });
     }
 }
 

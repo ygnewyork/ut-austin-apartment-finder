@@ -230,6 +230,52 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 
+.price-filter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-12);
+  box-shadow: var(--shadow-sm);
+}
+
+.price-filter label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: var(--space-4);
+}
+
+.price-select {
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-family: var(--font-family-base);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-in-out);
+}
+
+.price-select:hover {
+  border-color: var(--color-primary);
+}
+
+.price-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+.price-select option {
+  padding: var(--space-8);
+}
+
 .distance-legend {
   position: absolute;
   bottom: var(--space-16);

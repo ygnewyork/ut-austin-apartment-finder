@@ -128,5 +128,25 @@
         "notes": "The Nine at Rio is a seven-story West Campus apartment near UT Austin, offering fully furnished loft-style units, a courtyard pool, fitness center, game lounge, and secured parking, all within a five-minute walk from campus.",
         "website": "https://the9atrio.com/",
         "photo": "nine_at_rio.jpg"
+    },
+    {
+        "name": "The Standard",
+        "address": "715 West 23rd Street, Austin, TX 78705",
+        "lat": 30.286982,
+        "lon": -97.745769,
+        "price_per_person": "1000s-$2400s",
+        "notes": "The Standard at Austin is a 17-story West Campus apartment located a six-minute walk from UT Austin, offering furnished units, a pool deck with a Jumbotron, a two-story clubhouse with a game room, a fitness center, and available garage parking.",
+        "website": "https://thestandardaustin.landmark-properties.com/",
+        "photo": "the_standard.webp"
+    },
+    {
+        "name": "The Mark",
+        "address": "812 West 23rd Street, Austin, TX 78705",
+        "lat": 30.287507,
+        "lon": -97.746213,
+        "price_per_person": "1300s-$2300s",
+        "notes": "The Mark is a 17-story West Campus apartment built in 2023, offering furnished units, a rooftop pool deck, a two-story fitness center, a bowling alley, and available parking, all within a nine-minute walk from campus.",
+        "website": "https://themarkatx.com/",
+        "photo": "the_mark.webp"
     }
 ]

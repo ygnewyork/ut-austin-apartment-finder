@@ -35,6 +35,16 @@
                 <div class="map-controls">
                     <button id="resetViewBtn" class="reset-view-btn">Reset View</button>
                     <button id="toggleDistanceBtn" class="distance-toggle-btn">Walking Distance</button>
+                    <div class="price-filter">
+                        <label for="priceRange">Price Range:</label>
+                        <select id="priceRange" class="price-select">
+                            <option value="">All Prices</option>
+                            <option value="1000">Under $1,000</option>
+                            <option value="1200">Under $1,200</option>
+                            <option value="1400">Under $1,400</option>
+                            <option value="1600">Under $1,600</option>
+                        </select>
+                    </div>
                 </div>
                 <div id="map"></div>
                 <div class="distance-legend" id="distanceLegend">
