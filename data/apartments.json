@@ -1,0 +1,132 @@
+[
+    { 
+        "name": "Torre",
+        "address": "2020 Nueces St, Austin, TX 78705",
+        "lat": 30.283751,
+        "lon": -97.744434,
+        "price_per_person": "900s-$2,600s",
+        "notes": "Torre is an 18-story, luxury West Campus apartment near UT Austin featuring fully furnished units, extensive amenities like a rooftop pool, fitness center, study pods, and pet-friendly policies, all within a five-minute walk of campus.",
+        "website": "https://torreatx.com/",
+        "photo": "torre.jpg"
+    },
+    {
+        "name": "Skyloft",
+        "address": "507 West 23rd Street, Austin, TX 78705",
+        "lat": 30.286370,
+        "lon": -97.743535,
+        "price_per_person": "900s-$2200s",
+        "notes": "One of the tallest buildings in West Campus, offering great views and a sky lounge.",
+        "website": "https://www.skyloftatx.com/",
+        "photo": "skyloft.webp"
+    },
+    {
+        "name": "Yugo Austin Rio",
+        "address": "620 West 24th Street, Austin, TX 78705",
+        "lat": 30.288073,
+        "lon": -97.744411,
+        "price_per_person": "1300s-$1900s",
+        "notes": "Yugo Austin Rio is a modern, seven-story West Campus apartment near UT Austin offering fully furnished loft-style units, a rooftop sky terrace, 24/7 study lounge, gym, underground parking, and SMART housing options, all just minutes from campus.",
+        "website": "https://yugo.com/en-us/global/united-states-of-america/austin-tx/yugo-austin-rio",
+        "photo": "yugo.webp"
+    },
+    {
+        "name": "Noble 2500",
+        "address": "2500 San Gabriel Street, Austin, TX 78705",
+        "lat": 30.289480,
+        "lon": -97.747833,
+        "price_per_person": "1300s-$2200s",
+        "notes": "Noble 2500 is a modern, seven-story West Campus apartment near UT Austin offering fully furnished units, a pool with outdoor grills, fitness center, study spaces, on-site coffee shop, and balcony options, all within walking distance of campus.",
+        "website": "https://www.noble2500.com/",
+        "photo": "noble.webp"
+    },
+    {
+        "name": "Rise at West Campus",
+        "address": "2206 Nueces Street, Austin, TX 78705",
+        "lat": 30.285868,
+        "lon": -97.744102,
+        "price_per_person": "1200s-$2400s",
+        "notes": "Rise at West Campus is a 24-story student apartment near UT Austin featuring fully furnished units, a rooftop pool with jumbotron, fitness center, wellness spa, music lounge, and SMART housing options, all within a five-minute walk of campus.",
+        "website": "https://www.riseatwestcampus.com/",
+        "photo": "rise.jpeg"
+    },
+    {
+        "name": "Union on 24th",
+        "address": "701 West 24th Street, Austin, TX 78705",
+        "lat": 30.287736,
+        "lon": -97.745012,
+        "price_per_person": "1500s-$2200s",
+        "notes": "Union on 24th is a newly built, 30-story West Campus apartment in Austin offering fully furnished units, premium amenities like rooftop pool, study spaces, pet facilities, and SMART housing options, all within walking distance to UT Austin.",
+        "website": "https://www.unionon24th.com",
+        "photo": "union_on_24th.jpg"
+    },
+    {
+        "name": "Union on San Antonio",
+        "address": "2011 San Antonio Street, Austin, TX 78705",
+        "lat": 30.283350,
+        "lon": -97.742844,
+        "price_per_person": "1400s-$2100s",
+        "notes": "Union on San Antonio is a newly built, 30-story West Campus apartment near UT Austin offering fully furnished units, premium amenities like a pool deck, fitness center, study lounges, pet spa, and SMART housing options, all just a four-minute walk from campus.",
+        "website": "https://www.uniononsanantonio.com",
+        "photo": "union_on_san_an.jpg"
+    },
+    {
+        "name": "Yugo Austin Waterloo",
+        "address": "2400 Seton Avenue, Austin, TX 78705",
+        "lat": 30.2882443,
+        "lon": -97.7441208,
+        "price_per_person": "1300s-$2000s",
+        "notes": "Yugo Waterloo is a 30-story West Campus apartment near UT Austin, featuring fully furnished units, a rooftop pool with hot tub, fitness and yoga studios, smart tech upgrades, and SMART housing options, all just a five-minute walk from campus.",
+        "website": "https://yugo.com/en-us/global/united-states-of-america/austin-tx/yugo-austin-waterloo",
+        "photo": "yugo_waterloo.webp"
+    },
+    {
+        "name": "26 West",
+        "address": "600 West 26th Street, Austin, TX 78705",
+        "lat": 30.29111,
+        "lon": -97.743464,
+        "price_per_person": "1100s-$2100s",
+        "notes": "26 West is a five-story West Campus student apartment near UT Austin offering fully furnished units, resort-style pool, fitness center, rooftop basketball court, large parking garage, and SMART housing options, all minutes from campus.",
+        "website": "https://www.americancampus.com/student-apartments/tx/austin/26-west",
+        "photo": "26_west.jpeg"
+    },
+    {
+        "name": "Villas on Rio",
+        "address": "2111 Rio Grande Street, Austin, TX 78705",
+        "lat": 30.2848373,
+        "lon": -97.7446799,
+        "price_per_person": "900s-$1900s",
+        "notes": "Villas on Rio is a 19-story West Campus apartment near UT Austin offering fully furnished units, rooftop pool and spa, study lounges, fitness center, parking garage, and SMART housing options, all within walking distance of campus.",
+        "website": "https://villasonrio.com/",
+        "photo": "villas_on_rio.jpeg"
+    },
+    {
+        "name": "HillTop",
+        "address": "2400 San Gabriel Street, Austin, TX 78705",
+        "lat": 30.288293,
+        "lon": -97.747911,
+        "price_per_person": "900s-$1800s",
+        "notes": "HillTop is an eight-story West Campus apartment near UT Austin offering fully furnished units, a terrace pool deck with Jumbotron, fitness center, coffee bar, and study lounges, all within an eight-minute walk of campus.",
+        "website": "https://www.hilltopatx.com/",
+        "photo": "hilltop.webp"
+    },
+    {
+        "name": "Moontower",
+        "address": "2204 San Antonio Street, Austin, TX 78705",
+        "lat": 30.2856656,
+        "lon": -97.7431485,
+        "price_per_person": "1200s-$2100s",
+        "notes": "Moontower is an 18-story West Campus apartment near UT Austin featuring fully furnished units, rooftop pool, spin studio, fitness center, study lounge, and secured parking, all just a three-minute walk from campus.",
+        "website": "https://moontoweratx.com/",
+        "photo": "moontower.jpg"
+    },
+    {
+        "name": "The Nine at Rio",
+        "address": "2100 Rio Grande Street, Austin, TX 78705",
+        "lat": 30.2843557,
+        "lon": -97.7452282,
+        "price_per_person": "1000s-$1900s",
+        "notes": "The Nine at Rio is a seven-story West Campus apartment near UT Austin, offering fully furnished loft-style units, a courtyard pool, fitness center, game lounge, and secured parking, all within a five-minute walk from campus.",
+        "website": "https://the9atrio.com/",
+        "photo": "nine_at_rio.jpg"
+    }
+]

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js Test</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div id="test"></div>
+    <script>
+        console.log('Test page loaded');
+        
+        if (typeof d3 === 'undefined') {
+            console.error('D3.js failed to load');
+            document.getElementById('test').innerHTML = '<h1>D3.js Failed to Load</h1>';
+        } else {
+            console.log('D3.js loaded successfully, version:', d3.version);
+            d3.select('#test').html('<h1>D3.js Loaded Successfully! Version: ' + d3.version + '</h1>');
+        }
+        
+        // Test fetch to the apartments API
+        fetch('/api/apartments')
+            .then(response => {
+                console.log('Fetch response:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Apartments data:', data.length, 'items');
+                d3.select('#test').append('p').text('API working: ' + data.length + ' apartments loaded');
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+                d3.select('#test').append('p').text('API Error: ' + error.message);
+            });
+    </script>
+</body>
+</html>

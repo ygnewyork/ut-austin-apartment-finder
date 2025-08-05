@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wampus Prices</title>
+    
+    <!-- Leaflet CSS (Required for the map) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    <!-- Leaflet JS (Must be before D3 and your app.js) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+     
+    <script src="{{ url_for('static', filename='d3.v7.min.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>West Campus Apartments</h1>
+            <p class="header-subtitle">Interactive map of popular student housing in Austin, TX</p>
+            <div class="instructions">
+                <span class="instruction-item">Hover over markers for quick info</span>
+                <span class="instruction-item">Click markers for detailed information</span>
+                <span class="instruction-item">Pan and zoom to explore</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <div class="map-container">
+                <div class="map-controls">
+                    <button id="resetViewBtn" class="reset-view-btn">Reset View</button>
+                </div>
+                <div id="map"></div>
+                <div class="tooltip hidden" id="tooltip">
+                    <div class="tooltip-content">
+                        <h4 class="tooltip-title"></h4>
+                        <p class="tooltip-price"></p>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="info-panel">
+                <div class="info-panel-header">
+                    <h2>Apartment Details</h2>
+                </div>
+                <div class="info-panel-content" id="infoPanelContent">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏢</div>
+                        <h3>Select an apartment</h3>
+                        <p>Click on any apartment marker on the map to view detailed information including pricing, amenities, and contact details.</p>
+                    </div>
+                </div>
+            </aside>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p class="footer-attribution">
+                    Neighborhood data from 
+                    <a href="https://data.austintexas.gov/" target="_blank">City of Austin Open Data Portal</a>
+                </p>
+                <p class="footer-note">
+                    Apartment data compiled from various sources. Prices may vary and are subject to change.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
