@@ -117,6 +117,17 @@
   --duration-normal: 250ms;
   --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-in-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Extended palette and effects */
+  --color-primary-light: rgba(var(--ut-burnt-orange-rgb), 0.06);
+  --color-surface-elevated: rgba(255, 255, 255, 0.85);
+  --color-border-light: rgba(var(--ut-charcoal-rgb), 0.08);
+  --color-text-muted: rgba(var(--ut-charcoal-rgb), 0.6);
+  --font-weight-medium: 600;
+  --font-weight-semibold: 650;
+  --font-weight-bold: 750;
+  --duration-slow: 400ms;
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -170,7 +181,19 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
 }
 
-.header h1 { color: var(--color-text); margin-bottom: var(--space-4); }
+.header h1 { color: var(--color-text); margin-bottom: var(--space-4); position: relative; display: inline-block; }
+.header h1::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  transform: translateX(-50%);
+  transition: width var(--duration-slow) var(--ease-spring);
+}
+.header:hover h1::after { width: 60%; }
 .header-subtitle { color: var(--color-text-secondary); margin: 0; font-size: 1.2rem; font-weight: 400; }
 .instructions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-12); margin-top: var(--space-24); color: var(--color-text-secondary); font-size: 0.9rem; }
 .instruction-item { padding: var(--space-4) var(--space-12); }
@@ -407,6 +430,7 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   opacity: 0;
   transform: translateY(12px) scale(0.95);
   border: 1px solid var(--color-border);
+  backdrop-filter: blur(6px);
 }
 .tooltip:not(.hidden) { opacity: 1; transform: translateY(0) scale(1); }
 .tooltip-title { margin: 0 0 var(--space-4) 0; font-weight: 600; font-size: 0.95rem; }
@@ -668,27 +692,10 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   width: 100%; 
 }
 
-.footer {
-  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-elevated) 100%);
-  border-top: 1px solid var(--color-border-light);
-  padding: var(--space-16) var(--space-20); 
-  text-align: center;
-  font-size: 0.8rem; 
-  color: var(--color-text-muted);
-  font-weight: var(--font-weight-medium);
-}
-
-.footer a { 
-  color: var(--color-text-secondary); 
-  text-decoration: underline; 
-  text-decoration-color: var(--color-border-light); 
-  transition: all var(--duration-fast) var(--ease-out);
-}
-
-.footer a:hover { 
-  color: var(--color-primary); 
-  text-decoration-color: var(--color-primary); 
-}
+/* Revert footer to original simpler style */
+.footer { background-color: var(--color-surface); border-top: 1px solid var(--color-border); padding: var(--space-20) var(--space-24); text-align: center; font-size: 0.85rem; color: var(--color-text-secondary); }
+.footer a { color: var(--color-text); text-decoration: underline; text-decoration-color: var(--color-border); }
+.footer a:hover { color: var(--color-primary); text-decoration-color: var(--color-primary); }
 
 @media (max-width: 900px) {
   .main-content { 
@@ -745,4 +752,46 @@ a:hover { color: var(--color-primary-hover); text-decoration: underline; }
   .apartment-image {
     height: 180px;
   }
+}
+
+/* Themed Leaflet controls */
+.leaflet-bar a, .leaflet-bar a:hover {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+.leaflet-control { border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+.leaflet-bar a:hover { background: rgba(var(--ut-charcoal-rgb), 0.04); }
+
+/* Toast component */
+#toastContainer {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 99999;
+}
+.toast {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
 }

@@ -4,19 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive map of West Campus apartments near UT Austin with pricing, photos, and walking distance overlays.">
+    <meta property="og:title" content="UT Austin West Campus Apartments">
+    <meta property="og:description" content="Explore apartments near UT Austin with prices, photos, and walking distances.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/4/40/Texas_Longhorns_logo.svg">
     <title>Wampus Prices</title>
     
+    <link rel="preconnect" href="https://a.tile.openstreetmap.org">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
      
-    <script src="{{ url_for('static', filename='d3.v7.min.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='d3.v7.min.js') }}"></script>
 </head>
 <body>
     <div class="container">
@@ -64,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tooltip hidden" id="tooltip">
+                <div class="tooltip hidden" id="tooltip" role="tooltip" aria-hidden="true">
                     <div class="tooltip-content">
                         <h4 class="tooltip-title"></h4>
                         <p class="tooltip-price"></p>
@@ -76,7 +82,7 @@
                 <div class="info-panel-header">
                     <h2>Apartment Details</h2>
                 </div>
-                <div class="info-panel-content" id="infoPanelContent">
+                <div class="info-panel-content" id="infoPanelContent" aria-live="polite">
                     <div class="empty-state">
                         <div class="empty-state-icon">🏢</div>
                         <h3>Select an apartment</h3>
@@ -99,6 +105,6 @@
         </footer>
     </div>
 
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script defer src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>

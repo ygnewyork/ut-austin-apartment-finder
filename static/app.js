@@ -20,6 +20,7 @@ class WestCampusMap {
         
         this.utCampusCenter = [30.2862162,-97.7394];
         
+        this.scheduleUpdate = null;
         this.init();
     }
     
@@ -63,18 +64,22 @@ class WestCampusMap {
     }
 
     updateOverlay() {
-        const bounds = this.map.getBounds();
-        const topLeft = this.map.latLngToLayerPoint(bounds.getNorthWest());
-        const bottomRight = this.map.latLngToLayerPoint(bounds.getSouthEast());
+        if (this.scheduleUpdate) return;
+        this.scheduleUpdate = requestAnimationFrame(() => {
+            this.scheduleUpdate = null;
+            const bounds = this.map.getBounds();
+            const topLeft = this.map.latLngToLayerPoint(bounds.getNorthWest());
+            const bottomRight = this.map.latLngToLayerPoint(bounds.getSouthEast());
 
-        this.svg.attr("width", bottomRight.x - topLeft.x)
-            .attr("height", bottomRight.y - topLeft.y)
-            .style("left", topLeft.x + "px")
-            .style("top", topLeft.y + "px");
+            this.svg.attr("width", bottomRight.x - topLeft.x)
+                .attr("height", bottomRight.y - topLeft.y)
+                .style("left", topLeft.x + "px")
+                .style("top", topLeft.y + "px");
 
-        this.g.attr("transform", `translate(${-topLeft.x}, ${-topLeft.y})`);
+            this.g.attr("transform", `translate(${-topLeft.x}, ${-topLeft.y})`);
 
-        this.renderApartments();
+            this.renderMarkers(this.getFilteredApartments());
+        });
     }
     
     async getNeighborhoodData(neighname) {
@@ -127,13 +132,14 @@ class WestCampusMap {
         } catch (error) {
             console.error('Error loading data:', error);
             this.renderMap();
+            this.showToast('Some data failed to load. Using fallbacks where possible.');
         }
     }
     
     renderMap() {
         this.renderNeighborhoods();
         this.renderDistanceOverlay();
-        this.renderApartments();
+        this.renderMarkers(this.getFilteredApartments());
         this.updateInfoPanel();
     }
     
@@ -215,36 +221,49 @@ class WestCampusMap {
         }
     }
     
-    renderApartments() {
-        if (!this.apartments || this.apartments.length === 0) return;
-
-        // Use stored price filter instead of reading from DOM
-        const filteredApartments = this.currentPriceFilter ? 
+    getFilteredApartments() {
+        if (!this.apartments || this.apartments.length === 0) return [];
+        return this.currentPriceFilter ?
             this.apartments.filter(apartment => this.isPriceInRange(apartment, this.currentPriceFilter)) :
             this.apartments;
+    }
+
+    renderMarkers(apartments) {
+        if (!apartments || apartments.length === 0) {
+            this.g.selectAll('.apartment-marker').remove();
+            return;
+        }
 
         const apartmentMarkers = this.g.selectAll('.apartment-marker')
-            .data(filteredApartments, d => d.name);
+            .data(apartments, d => d.name);
 
         const newMarkers = apartmentMarkers.enter()
             .append('g')
-            .attr('class', 'apartment-marker');
+            .attr('class', 'apartment-marker')
+            .attr('tabindex', 0)
+            .attr('role', 'button')
+            .attr('aria-label', d => `${d.name}, $${d.price_per_person} per person`);
 
         newMarkers.append('circle').attr('r', 8);
-            
-        newMarkers.on('mouseover', (event, d) => {
+
+        newMarkers
+            .on('mouseover', (event, d) => {
                 this.showTooltip(event, {
                     title: d.name,
                     info: `$${d.price_per_person}/month`,
                     photo: d.photo
                 });
             })
-            .on('mouseout', () => {
-                this.hideTooltip();
-            })
+            .on('mouseout', () => this.hideTooltip())
             .on('click', (event, d) => {
                 event.stopPropagation();
                 this.selectApartment(d);
+            })
+            .on('keydown', (event, d) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    this.selectApartment(d);
+                }
             });
 
         apartmentMarkers.merge(newMarkers)
@@ -252,7 +271,7 @@ class WestCampusMap {
                 const point = this.map.latLngToLayerPoint(new L.LatLng(d.lat, d.lon));
                 return `translate(${point.x},${point.y})`;
             });
-            
+
         apartmentMarkers.exit().remove();
     }
     
@@ -288,7 +307,7 @@ class WestCampusMap {
                     
                     ${selectedApartment.photo ? `
                     <div class="apartment-image">
-                        <img src="/static/images/${selectedApartment.photo}" alt="${selectedApartment.name}" />
+                        <img src="/static/images/${selectedApartment.photo}" alt="${selectedApartment.name}" onerror="this.style.display='none'" />
                     </div>` : ''}
                     
                     <div class="price-section">
@@ -323,6 +342,7 @@ class WestCampusMap {
         
         this.tooltip
             .classed('hidden', false)
+            .attr('aria-hidden', 'false')
             .html(`
                 <div class="tooltip-content">
                     ${hasPhoto ? `
@@ -351,7 +371,7 @@ class WestCampusMap {
     }
     
     hideTooltip() {
-        this.tooltip.classed('hidden', true);
+        this.tooltip.classed('hidden', true).attr('aria-hidden', 'true');
     }
     
     resetView() {
@@ -380,71 +400,56 @@ class WestCampusMap {
         return { min: 0, max: Infinity };
     }
     
-    // Check if apartment price is within the filter range
+    // Check if apartment price is within the filter range (prefers numeric fields if present)
     isPriceInRange(apartment, maxPrice) {
         if (!maxPrice) return true; // No filter applied
-        
+        const numericMax = +maxPrice;
+        if (apartment && Number.isFinite(apartment.price_min)) {
+            return apartment.price_min <= numericMax;
+        }
         const priceRange = this.parsePriceRange(apartment.price_per_person);
-        return priceRange.min <= maxPrice;
+        return priceRange.min <= numericMax;
     }
     
     // Filter apartments by price and update map
     filterByPrice(maxPrice) {
-        this.currentPriceFilter = maxPrice; // Store the current filter
+        this.currentPriceFilter = maxPrice ? +maxPrice : null; // Store the current filter as number
         
         const filteredApartments = this.apartments.filter(apartment => 
-            this.isPriceInRange(apartment, maxPrice)
+            this.isPriceInRange(apartment, this.currentPriceFilter)
         );
         
         // Update the apartment markers
-        this.renderFilteredApartments(filteredApartments);
+            this.renderMarkers(filteredApartments);
         
         // Update info panel if currently selected apartment is filtered out
         const selectedMarker = this.g.select('.apartment-marker.selected');
         if (!selectedMarker.empty()) {
             const selectedData = selectedMarker.datum();
-            if (!this.isPriceInRange(selectedData, maxPrice)) {
+            if (!this.isPriceInRange(selectedData, this.currentPriceFilter)) {
                 this.clearSelection();
             }
         }
     }
     
-    // Render filtered apartments
-    renderFilteredApartments(filteredApartments) {
-        const apartmentMarkers = this.g.selectAll('.apartment-marker')
-            .data(filteredApartments, d => d.name);
-
-        // Remove markers that are filtered out
-        apartmentMarkers.exit().remove();
-
-        // Add new markers for apartments that are now visible
-        const newMarkers = apartmentMarkers.enter()
-            .append('g')
-            .attr('class', 'apartment-marker');
-
-        newMarkers.append('circle').attr('r', 8);
-            
-        newMarkers.on('mouseover', (event, d) => {
-                this.showTooltip(event, {
-                    title: d.name,
-                    info: `$${d.price_per_person}/month`,
-                    photo: d.photo
-                });
-            })
-            .on('mouseout', () => {
-                this.hideTooltip();
-            })
-            .on('click', (event, d) => {
-                event.stopPropagation();
-                this.selectApartment(d);
-            });
-
-        // Update positions for all markers
-        apartmentMarkers.merge(newMarkers)
-            .attr('transform', d => {
-                const point = this.map.latLngToLayerPoint(new L.LatLng(d.lat, d.lon));
-                return `translate(${point.x},${point.y})`;
-            });
+    // Toast for non-blocking errors/info
+    showToast(message) {
+        let container = document.getElementById('toastContainer');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.setAttribute('aria-live', 'polite');
+            document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        container.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
     }
 }
 
